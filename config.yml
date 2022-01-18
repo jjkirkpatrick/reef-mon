@@ -1,0 +1,32 @@
+influxDB:
+  host: "http://localhost"
+  port: "8086"
+  token: "mzf0dwz_no7eZC5edf5Ldp2T26f1AkH7k_zngKNotjPWBcX2BHAgl7sDAOzNzi3vJTtrpCoHNEOH_IBeL1kUWg=="
+  bucket: "reef-mon"
+  org: "reef-mon"
+
+monitors:
+  monitor1:
+    name: "Temp1"
+    type: "GPIO"
+    measurement: "reef_temperature"
+    field: "temperature"
+    interval: 2
+  monitor2:
+    name: "Temp2"
+    type: "GPIO"
+    measurement: "reef_temperature"
+    field: "temperature"
+    interval: 20
+  monitor3:
+    name: "Salinity"
+    type: "GPIO"
+    measurement: "reef_salinity"
+    field: "salinity"
+    interval: 5
+  monitor4:
+    name: "PH"
+    type: "GPIO"
+    measurement: "reef_ph"
+    field: "PH"
+    interval: 10
