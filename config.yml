@@ -11,13 +11,13 @@ monitors:
     type: "GPIO"
     measurement: "reef_temperature"
     field: "temperature"
-    interval: 2
+    interval: 5
   monitor2:
     name: "Temp2"
     type: "GPIO"
     measurement: "reef_temperature"
     field: "temperature"
-    interval: 20
+    interval: 5
   monitor3:
     name: "Salinity"
     type: "GPIO"
@@ -29,4 +29,4 @@ monitors:
     type: "GPIO"
     measurement: "reef_ph"
     field: "PH"
-    interval: 10
+    interval: 5

@@ -25,13 +25,6 @@ func main() {
 		gocron.Every(uint64(v.Interval)).Second().Do(cfg.do_monitor, v)
 	}
 
-	cfg.write_to_influx(DataPoint{
-		Measurement: "reef_temperature",
-		Tags:        map[string]string{"location": "reef"},
-		Fields:      map[string]interface{}{"temperature": 24.85},
-		Timestamp:   time.Now(),
-	})
-
 	//gocron.Every(1).Second().Do(cfg.write_to_influx)
 	<-gocron.Start()
 }
@@ -42,8 +35,7 @@ func randFlt(min float64, max float64) float64 {
 
 func (cfg *Config) do_monitor(monitor MonitorConfig) {
 
-	primer := randFlt(20, 50)
-	value := randFlt(primer, primer+5)
+	value := randFlt(25, 25.3)
 
 	datapoint := DataPoint{
 		Measurement: monitor.Measurement,
