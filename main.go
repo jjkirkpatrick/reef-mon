@@ -31,17 +31,7 @@ func main() {
 
 	}
 
-	//gocron.Every(1).Second().Do(cfg.write_to_influx)
-
-	//run gocron in the background
-
 	<-gocron.Start()
-
-	fmt.Println("Press Enter to exit...")
-
-	// wait for 2 minutes
-	<-time.After(time.Second * 120)
-
 }
 
 func randFlt(min float64, max float64) float64 {
