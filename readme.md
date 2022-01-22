@@ -31,10 +31,17 @@ influxDB:
 The below configuration is an example of how to configure a monitor.
 
 Name: The name of the monitor, this is used to identify the monitor in the database.
-Type: currently unused
+
 Mesurment: The name of the measurement in the database.
+
 Field: The mesurment field name.
+
 Interval: The interval in seconds used to poll for data.
+
+Type: Yaml representation of the monitor type and confiuration  
+type:
+  name: "gpio_switch"
+  pin: 22
 
 ```YML
 monitors:

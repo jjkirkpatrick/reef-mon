@@ -21,10 +21,16 @@ type Monitor struct {
 
 type MonitorConfig struct {
 	Name        string
-	Type        string
+	Type        MonitorType
 	Measurement string
 	Field       string
 	Interval    int
+}
+
+type MonitorType struct {
+	Name     string
+	Pin      int
+	DeviceID string
 }
 
 type DataPoint struct {
