@@ -22,11 +22,26 @@ func main() {
 
 	//for each monitor print out the name and type
 	for _, v := range monitors.Monitors {
-		gocron.Every(uint64(v.Interval)).Second().Do(cfg.do_monitor, v)
+
+		if v.Type.Name == "gpio_switch" {
+			gocron.Every(uint64(v.Interval)).Second().Do(cfg.gpio_switch, v)
+		} else {
+			fmt.Printf("Unknown monitor type: %s for monitor: %s \n", v.Type, v.Name)
+		}
+
 	}
 
 	//gocron.Every(1).Second().Do(cfg.write_to_influx)
+
+	//run gocron in the background
+
 	<-gocron.Start()
+
+	fmt.Println("Press Enter to exit...")
+
+	// wait for 2 minutes
+	<-time.After(time.Second * 120)
+
 }
 
 func randFlt(min float64, max float64) float64 {
