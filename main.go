@@ -25,6 +25,8 @@ func main() {
 
 		if v.Type.Name == "gpio_switch" {
 			gocron.Every(uint64(v.Interval)).Second().Do(cfg.gpio_switch, v)
+		} else if v.Type.Name == "1w_temperature" {
+			gocron.Every(uint64(v.Interval)).Second().Do(cfg.temperature, v)
 		} else {
 			fmt.Printf("Unknown monitor type: %s for monitor: %s \n", v.Type, v.Name)
 		}

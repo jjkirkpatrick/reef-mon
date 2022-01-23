@@ -10,7 +10,23 @@ monitors:
     name: "WaterLow"
     measurement: "water_low"
     field: "status"
-    interval: 1
+    interval: 10
     type:
       name: "gpio_switch"
       pin: 22
+  temp1:
+    name: "temperature 1"
+    measurement: "water_temperature"
+    field: "temperature"
+    interval: 5
+    type:
+      name: "1w_temperature"
+      deviceid: 28-01211358c5ab
+  temp2:
+    name: "temperature 2"
+    measurement: "water_temperature"
+    field: "temperature"
+    interval: 5
+    type:
+      name: "1w_temperature"
+      deviceid: "28-012113361d4d"
