@@ -1,4 +1,4 @@
-package main
+package temperature
 
 import (
 	"errors"
@@ -7,13 +7,16 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/jjkikrpatrick/reef-mon/system/drivers/influxdb"
+	"github.com/jjkikrpatrick/reef-mon/system/models"
 )
 
 var ErrReadSensor = errors.New("failed to read sensor temperature")
 
-func (cfg *Config) temperature(monitor MonitorConfig) {
-
-	sensors, err := Sensors()
+func Get(monitorConfig models.MonitorConfig) {
+	influx := influxdb.New()
+	sensors, err := sensors()
 
 	if err != nil {
 		fmt.Printf("Error reading sensors: %s\n", err)
@@ -21,26 +24,26 @@ func (cfg *Config) temperature(monitor MonitorConfig) {
 	}
 
 	for _, sensor := range sensors {
-		if sensor == monitor.Type.DeviceID {
-			temperature, err := Temperature(sensor)
+		if sensor == monitorConfig.Type.DeviceID {
+			temperature, err := temperature(sensor)
 
 			if err != nil {
 				fmt.Println(err)
 			}
 
-			datapoint := DataPoint{
-				Measurement: monitor.Measurement,
-				Tags:        map[string]string{"name": monitor.Name},
-				Fields:      map[string]interface{}{monitor.Field: temperature},
+			datapoint := influxdb.DataPoint{
+				Measurement: monitorConfig.Measurement,
+				Tags:        map[string]string{"name": monitorConfig.Name},
+				Fields:      map[string]interface{}{monitorConfig.Field: temperature},
 				Timestamp:   time.Now(),
 			}
-			cfg.write_to_influx(datapoint)
+			influx.Write(datapoint)
 		}
 	}
 }
 
 // Sensors get all connected sensor IDs as array
-func Sensors() ([]string, error) {
+func sensors() ([]string, error) {
 	data, err := ioutil.ReadFile("/sys/bus/w1/devices/w1_bus_master1/w1_master_slaves")
 	if err != nil {
 		return nil, err
@@ -55,7 +58,7 @@ func Sensors() ([]string, error) {
 }
 
 // Temperature get the temperature of a given sensor
-func Temperature(sensor string) (float64, error) {
+func temperature(sensor string) (float64, error) {
 	data, err := ioutil.ReadFile("/sys/bus/w1/devices/" + sensor + "/w1_slave")
 	if err != nil {
 		return 0.0, ErrReadSensor
@@ -78,4 +81,21 @@ func Temperature(sensor string) (float64, error) {
 	}
 
 	return c / 1000.0, nil
+}
+
+func ListTemperatureDevices() {
+	sensors, err := sensors()
+
+	if err != nil {
+		fmt.Printf("Error reading sensors: %s\n", err)
+		return
+	}
+
+	for _, sensor := range sensors {
+		temperature, err := temperature(sensor)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("%s : %.2f°c\n", sensor, temperature)
+	}
 }
