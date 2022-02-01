@@ -30,22 +30,25 @@ on the output pins for the raspberry pi, and not the wiringPi convention.
 
 */
 
-package main
+package gpio
 
 import (
 	"time"
 
+	"github.com/jjkikrpatrick/reef-mon/system/drivers/influxdb"
+	"github.com/jjkikrpatrick/reef-mon/system/models"
 	"github.com/stianeikeland/go-rpio/v4"
 )
 
-func (cfg *Config) gpio_switch(monitor MonitorConfig) {
+func GetSwitch(monitorConfig models.MonitorConfig) {
+	influx := influxdb.New()
 
 	if err := rpio.Open(); err != nil {
 		panic(err)
 	}
 	defer rpio.Close()
 
-	pin := rpio.Pin(monitor.Type.Pin)
+	pin := rpio.Pin(monitorConfig.Type.Pin)
 
 	pin.Input()
 	pin.PullDown()
@@ -57,12 +60,11 @@ func (cfg *Config) gpio_switch(monitor MonitorConfig) {
 		value = true
 	}
 
-	datapoint := DataPoint{
-		Measurement: monitor.Measurement,
-		Tags:        map[string]string{"name": monitor.Name},
-		Fields:      map[string]interface{}{monitor.Field: value},
+	datapoint := influxdb.DataPoint{
+		Measurement: monitorConfig.Measurement,
+		Tags:        map[string]string{"name": monitorConfig.Name},
+		Fields:      map[string]interface{}{monitorConfig.Field: value},
 		Timestamp:   time.Now(),
 	}
-
-	cfg.write_to_influx(datapoint)
+	influx.Write(datapoint)
 }

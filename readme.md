@@ -9,11 +9,20 @@ InfluxDB: https://influxdb.com/
 
 ## Installation
 
-Clone the repository and run the following command from within the repository:
+Clone the repository and run the following command to start the application:
 
 ```bash
+cd reef-mon/commands
 go run . 
 ```
+
+To list all temperature sensors run the following:
+
+```bash
+cd reef-mon/commands
+go run . list-temperature-devices
+```
+
 
 ## Configuration
 
