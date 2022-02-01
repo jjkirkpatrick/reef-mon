@@ -31,7 +31,7 @@ type DataPoint struct {
 }
 
 func New() InfluxDB {
-	const configPath = "/home/pi/reef-mon/config/config.yml"
+	const configPath = "config.yml"
 	influx, err := influxConfig(configPath)
 
 	if err != nil {
