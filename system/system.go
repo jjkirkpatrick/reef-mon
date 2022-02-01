@@ -11,7 +11,7 @@ import (
 
 func Start() chan bool {
 
-	const configPath = "../config/config.yml"
+	const configPath = "config.yml"
 
 	monitors := helpers.ReadMonitors(configPath)
 
