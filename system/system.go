@@ -2,6 +2,8 @@ package system
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/jasonlvhit/gocron"
 	"github.com/jjkikrpatrick/reef-mon/system/internal/helpers"
@@ -11,9 +13,9 @@ import (
 
 func Start() chan bool {
 
-	const configPath = "config.yml"
-
-	monitors := helpers.ReadMonitors(configPath)
+	ex, _ := os.Executable()
+	exPath := filepath.Dir(ex)
+	monitors := helpers.ReadMonitors(exPath + "/config.yml")
 
 	//for each monitor print out the name and type
 	for _, v := range monitors.Monitors {

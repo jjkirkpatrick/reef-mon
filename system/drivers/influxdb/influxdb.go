@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -31,8 +32,9 @@ type DataPoint struct {
 }
 
 func New() InfluxDB {
-	const configPath = "config.yml"
-	influx, err := influxConfig(configPath)
+	ex, _ := os.Executable()
+	exPath := filepath.Dir(ex)
+	influx, err := influxConfig(exPath + "/config.yml")
 
 	if err != nil {
 		panic(err)

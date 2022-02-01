@@ -15,3 +15,10 @@ pi:
 pi-zero:
 	env GOARM=6 GOOS=linux GOARCH=arm go build -o $(BINARY) -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
 	cp config/config.yml bin/config.yml
+
+
+.PHONY: run-dev
+run-dev:
+	go build -o $(BINARY) -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
+	cp config/config.yml bin/config.yml
+	./$(BINARY)
