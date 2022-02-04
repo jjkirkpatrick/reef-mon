@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
 	"github.com/jjkikrpatrick/reef-mon/system"
 	"github.com/jjkikrpatrick/reef-mon/system/modules/temperature"
 )
@@ -38,8 +37,11 @@ func main() {
 		fmt.Println("Starting reef-Mon")
 		<-system.Start()
 	case "list-temperature-devices":
-		fmt.Println("list-temperature-devices", args)
-		temperature.ListTemperatureDevices()
+		results := temperature.ListTemperatureDevices()
+		for _, result := range results {
+			//TODO: Properly cast result[1] to float64
+			fmt.Printf("%s : %s°c\n", result[0], result[1])
+		}
 	default:
 		fmt.Println("Unknown command: '", v, "'")
 		os.Exit(1)

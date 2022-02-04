@@ -83,12 +83,14 @@ func temperature(sensor string) (float64, error) {
 	return c / 1000.0, nil
 }
 
-func ListTemperatureDevices() {
+func ListTemperatureDevices() [][]string {
 	sensors, err := sensors()
+
+	results := [][]string{}
 
 	if err != nil {
 		fmt.Printf("Error reading sensors: %s\n", err)
-		return
+		return nil
 	}
 
 	for _, sensor := range sensors {
@@ -96,6 +98,7 @@ func ListTemperatureDevices() {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Printf("%s : %.2f°c\n", sensor, temperature)
+		results = append(results, []string{sensor, fmt.Sprintf("%.2f", temperature)})
 	}
+	return results
 }
