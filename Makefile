@@ -1,4 +1,4 @@
-BINARY=/usr/local/reefmon/bin/
+BINARY=/usr/local/bin/reefmon/
 VERSION:=$(shell git describe --always --tags)
 
 .PHONY:pi

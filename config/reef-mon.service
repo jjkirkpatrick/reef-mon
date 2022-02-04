@@ -5,7 +5,7 @@ After=syslog.target network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/reefmon/bin/reef-mon
+ExecStart=/usr/local/bin/reefmon/reef-mon
 Restart=on-failure
 RestartSec=10
 KillMode=process
