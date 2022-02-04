@@ -1,24 +1,22 @@
-BINARY=bin/reef-pi
+BINARY=/usr/local/reefmon/bin/
 VERSION:=$(shell git describe --always --tags)
-
-.PHONY:go
-go:
-	go build -o $(BINARY) -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
-	cp config/config.yml bin/config.yml
 
 .PHONY:pi
 pi:
-	env GOOS=linux GOARCH=arm go build -o $(BINARY) -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
+	env GOOS=linux GOARCH=arm go build -o "$(BINARY)reef-mon" -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
 	cp config/config.yml bin/config.yml
-
-.PHONY: pi-zero
-pi-zero:
-	env GOARM=6 GOOS=linux GOARCH=arm go build -o $(BINARY) -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
-	cp config/config.yml bin/config.yml
-
 
 .PHONY: run-dev
 run-dev:
-	go build -o $(BINARY) -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
+	go build -o "$(BINARY)reef-mon" -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
 	cp config/config.yml bin/config.yml
-	./$(BINARY)
+	./"$(BINARY)/reef-mon"
+
+.PHONY: deploy-service
+deploy-service:
+	sudo env GOOS=linux GOARCH=arm go build -o "$(BINARY)reef-mon" -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
+	sudo cp config/config.yml "$(BINARY)config.yml"
+	sudo cp config/reef-mon.service /etc/systemd/system/reef-mon.service
+	sudo systemctl daemon-reload
+	sudo systemctl enable reef-mon
+	sudo systemctl start reef-mon
