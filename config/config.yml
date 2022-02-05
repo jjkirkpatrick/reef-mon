@@ -1,7 +1,7 @@
 influxDB:
-  host: "http://192.168.1.114"
+  host: "http://192.168.1.123"
   port: "8086"
-  token: "GsQvDq11L6HH57KTiQryhTdD24jkAUjQxuQDE1t3cmca40QEtcL7XOT7AWotQJ42G9AKR_KWxOEkiwMMCCXU6w=="
+  token: "SV9Jw1Dtlj_Gu22nQl5MZmf72aN3ReO389jU4c62f1QhSPQVjBr7J-CKtxbDO_gklVp0L0dSse659SfS73rixQ=="
   bucket: "reef-mon"
   org: "reef-mon"
 

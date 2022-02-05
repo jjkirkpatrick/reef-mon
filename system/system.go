@@ -19,7 +19,6 @@ func Start() chan bool {
 
 	//for each monitor print out the name and type
 	for _, v := range monitors.Monitors {
-
 		if v.Type.Name == "gpio_switch" {
 			gocron.Every(uint64(v.Interval)).Second().Do(gpio.GetSwitch, v)
 		} else if v.Type.Name == "1w_temperature" {

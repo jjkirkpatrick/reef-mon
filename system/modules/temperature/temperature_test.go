@@ -7,7 +7,6 @@ import (
 	"github.com/jjkikrpatrick/reef-mon/system/models"
 )
 
-
 func TestGet(t *testing.T) {
 	type args struct {
 		monitorConfig models.MonitorConfig
@@ -16,7 +15,7 @@ func TestGet(t *testing.T) {
 		name string
 		args args
 	}{
-
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -47,7 +46,6 @@ func Test_sensors(t *testing.T) {
 	}
 }
 
-
 func Test_temperature(t *testing.T) {
 	type args struct {
 		sensor string
@@ -58,6 +56,7 @@ func Test_temperature(t *testing.T) {
 		want    float64
 		wantErr bool
 	}{
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -76,12 +75,15 @@ func Test_temperature(t *testing.T) {
 func TestListTemperatureDevices(t *testing.T) {
 	tests := []struct {
 		name string
+		want [][]string
 	}{
-		{"ListTemperatureDevices Test"},
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ListTemperatureDevices()
+			if got := ListTemperatureDevices(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ListTemperatureDevices() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }

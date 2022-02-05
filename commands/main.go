@@ -37,6 +37,7 @@ func main() {
 		fmt.Println("Starting reef-Mon")
 		<-system.Start()
 	case "list-temperature-devices":
+		fmt.Println("list-temperature-devices", args)
 		results := temperature.ListTemperatureDevices()
 		for _, result := range results {
 			//TODO: Properly cast result[1] to float64
