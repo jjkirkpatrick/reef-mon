@@ -36,6 +36,7 @@ func Get(monitorConfig models.MonitorConfig) {
 				Tags:        map[string]string{"name": monitorConfig.Name},
 				Fields:      map[string]interface{}{monitorConfig.Field: temperature},
 				Timestamp:   time.Now(),
+				Bucket:      monitorConfig.Influx.Bucket,
 			}
 			influx.Write(datapoint)
 		}

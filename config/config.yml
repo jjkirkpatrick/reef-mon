@@ -1,7 +1,7 @@
 influxDB:
   host: "http://192.168.1.123"
   port: "8086"
-  token: "SV9Jw1Dtlj_Gu22nQl5MZmf72aN3ReO389jU4c62f1QhSPQVjBr7J-CKtxbDO_gklVp0L0dSse659SfS73rixQ=="
+  token: "S...Q=="
   bucket: "reef-mon"
   org: "reef-mon"
 
@@ -14,6 +14,8 @@ monitors:
     type:
       name: "gpio_switch"
       pin: 22
+    influx:
+      bucket: "reef-mon-water-level"
   temp1:
     name: "temperature 1"
     measurement: "water_temperature"
@@ -22,6 +24,8 @@ monitors:
     type:
       name: "1w_temperature"
       deviceid: 28-01211358c5ab
+    influx:
+      bucket: "reef-mon-water-temperature"
   temp2:
     name: "temperature 2"
     measurement: "water_temperature"
@@ -30,3 +34,5 @@ monitors:
     type:
       name: "1w_temperature"
       deviceid: "28-012113361d4d"
+    influx:
+      bucket: "reef-mon-water-temperature"

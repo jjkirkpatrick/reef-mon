@@ -29,6 +29,7 @@ type DataPoint struct {
 	Tags        map[string]string
 	Fields      map[string]interface{}
 	Timestamp   time.Time
+	Bucket      string
 }
 
 func New() InfluxDB {
@@ -46,7 +47,7 @@ func New() InfluxDB {
 func (influx *InfluxDB) Write(datapoint DataPoint) {
 	client := influxdb2.NewClient(influx.Influx.Host+":"+influx.Influx.Port, influx.Influx.Token)
 
-	writeAPI := client.WriteAPIBlocking(influx.Influx.Org, influx.Influx.Bucket)
+	writeAPI := client.WriteAPIBlocking(influx.Influx.Org, datapoint.Bucket)
 
 	err := writeAPI.WritePoint(context.Background(), influxdb2.NewPoint(datapoint.Measurement, datapoint.Tags, datapoint.Fields, datapoint.Timestamp))
 
