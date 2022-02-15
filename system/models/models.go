@@ -14,9 +14,10 @@ type MonitorConfig struct {
 }
 
 type MonitorType struct {
-	Name     string
-	Pin      int
-	DeviceID string
+	Name       string
+	Pin        int
+	DeviceID   string
+	Active_low bool
 }
 
 type InfluxConfig struct {

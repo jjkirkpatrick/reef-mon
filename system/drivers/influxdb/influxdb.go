@@ -50,7 +50,6 @@ func (influx *InfluxDB) Write(datapoint DataPoint) {
 	writeAPI := client.WriteAPIBlocking(influx.Influx.Org, datapoint.Bucket)
 
 	err := writeAPI.WritePoint(context.Background(), influxdb2.NewPoint(datapoint.Measurement, datapoint.Tags, datapoint.Fields, datapoint.Timestamp))
-
 	if err != nil {
 		fmt.Println(err)
 	}

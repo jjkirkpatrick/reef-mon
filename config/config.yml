@@ -14,6 +14,7 @@ monitors:
     type:
       name: "gpio_switch"
       pin: 22
+      active_low: true
     influx:
       bucket: "reef-mon-water-level"
   temp1:

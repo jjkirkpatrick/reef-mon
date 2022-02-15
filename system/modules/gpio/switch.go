@@ -51,7 +51,12 @@ func GetSwitch(monitorConfig models.MonitorConfig) {
 	pin := rpio.Pin(monitorConfig.Type.Pin)
 
 	pin.Input()
-	pin.PullDown()
+
+	if monitorConfig.Type.Active_low {
+		pin.PullDown()
+	} else {
+		pin.PullUp()
+	}
 
 	var value bool
 	if pin.Read() == 0 {
@@ -65,6 +70,7 @@ func GetSwitch(monitorConfig models.MonitorConfig) {
 		Tags:        map[string]string{"name": monitorConfig.Name},
 		Fields:      map[string]interface{}{monitorConfig.Field: value},
 		Timestamp:   time.Now(),
+		Bucket:      monitorConfig.Influx.Bucket,
 	}
 	influx.Write(datapoint)
 }

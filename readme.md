@@ -55,18 +55,27 @@ type:
 
 ```YML
 monitors:
-  monitor1:
-    name: "Temperature_1"
-    type: "GPIO"
-    measurement: "reef_temperature"
+  lowWater1:
+    name: "WaterLow"
+    measurement: "water_low"
+    field: "status"
+    interval: 10
+    type:
+      name: "gpio_switch"
+      pin: 22
+      active_low: true  
+    influx:
+      bucket: "reef-mon-water-level"
+  temperature1:
+    name: "temperature 1"
+    measurement: "water_temperature"
     field: "temperature"
-    interval: 2
-  monitor2:
-    name: "Temperature_2"
-    type: "GPIO"
-    measurement: "reef_temperature"
-    field: "temperature"
-    interval: 20
+    interval: 5
+    type:
+      name: "1w_temperature"
+      deviceid: 28-01211358c5ab
+    influx:
+      bucket: "reef-mon-water-temperature"
 ```
 
 ## Contributing
