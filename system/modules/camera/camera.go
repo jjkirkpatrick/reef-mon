@@ -5,15 +5,12 @@ package camera
 
 import (
 	"bytes"
-	"flag"
-	"fmt"
 	"image"
 	"image/jpeg"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
-	"os"
 	"sort"
 	"strconv"
 	"time"
@@ -49,16 +46,11 @@ var supportedFormats = map[webcam.PixelFormat]bool{
 	V4L2_PIX_FMT_YUYV: true,
 }
 
-func Stream() {
-	dev := flag.String("d", "/dev/video0", "video device to use")
-	fmtstr := flag.String("f", "", "video format to use, default first supported")
-	szstr := flag.String("s", "", "frame size to use, default largest one")
-	single := flag.Bool("m", false, "single image http mode, default mjpeg video")
-	addr := flag.String("l", ":8080", "addr to listien")
-	fps := flag.Bool("p", true, "print fps info")
-	flag.Parse()
+func Stream(addr string, dev string, uri string, single bool) {
+	fmtstr := ""
+	szstr := ""
 
-	cam, err := webcam.Open(*dev)
+	cam, err := webcam.Open(dev)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -67,21 +59,16 @@ func Stream() {
 	// select pixel format
 	format_desc := cam.GetSupportedFormats()
 
-	fmt.Println("Available formats:")
-	for _, s := range format_desc {
-		fmt.Fprintln(os.Stderr, s)
-	}
-
 	var format webcam.PixelFormat
 FMT:
 	for f, s := range format_desc {
-		if *fmtstr == "" {
+		if fmtstr == "" {
 			if supportedFormats[f] {
 				format = f
 				break FMT
 			}
 
-		} else if *fmtstr == s {
+		} else if fmtstr == s {
 			if !supportedFormats[f] {
 				log.Println(format_desc[f], "format is not supported, exiting")
 				return
@@ -99,16 +86,13 @@ FMT:
 	frames := FrameSizes(cam.GetSupportedFrameSizes(format))
 	sort.Sort(frames)
 
-	fmt.Fprintln(os.Stderr, "Supported frame sizes for format", format_desc[format])
-	for _, f := range frames {
-		fmt.Fprintln(os.Stderr, f.GetString())
-	}
+
 	var size *webcam.FrameSize
-	if *szstr == "" {
+	if szstr == "" {
 		size = &frames[len(frames)-1]
 	} else {
 		for _, f := range frames {
-			if *szstr == f.GetString() {
+			if szstr == f.GetString() {
 				size = &f
 			}
 		}
@@ -118,14 +102,12 @@ FMT:
 		return
 	}
 
-	fmt.Fprintln(os.Stderr, "Requesting", format_desc[format], size.GetString())
 	f, w, h, err := cam.SetImageFormat(format, uint32(size.MaxWidth), uint32(size.MaxHeight))
 	if err != nil {
 		log.Println("SetImageFormat return error", err)
 		return
 
 	}
-	fmt.Fprintf(os.Stderr, "Resulting image format: %s %dx%d\n", format_desc[f], w, h)
 
 	// start streaming
 	err = cam.StartStreaming()
@@ -140,14 +122,13 @@ FMT:
 		back chan struct{}      = make(chan struct{})
 	)
 	go encodeToImage(cam, back, fi, li, w, h, f)
-	if *single {
-		go httpImage(*addr, li)
+	if single {
+		go httpImage(addr, li)
 	} else {
-		go httpVideo(*addr, li)
+		go httpVideo(addr, uri, li)
 	}
 
 	timeout := uint32(5) //5 seconds
-	start := time.Now()
 	var fr time.Duration
 
 	for {
@@ -176,14 +157,6 @@ FMT:
 
 			// print framerate info every 10 seconds
 			fr++
-			if *fps {
-				if d := time.Since(start); d > time.Second*10 {
-					fmt.Println(float64(fr)/(float64(d)/float64(time.Second)), "fps")
-					start = time.Now()
-					fr = 0
-				}
-			}
-
 			select {
 			case fi <- frame:
 				<-back
@@ -273,10 +246,10 @@ func httpImage(addr string, li chan *bytes.Buffer) {
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
-func httpVideo(addr string, li chan *bytes.Buffer) {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+func httpVideo(addr string, uri string,  li chan *bytes.Buffer) {
+	http.HandleFunc(uri, func(w http.ResponseWriter, r *http.Request) {
 		log.Println("connect from", r.RemoteAddr, r.URL)
-		if r.URL.Path != "/" {
+		if r.URL.Path != uri {
 			http.NotFound(w, r)
 			return
 		}

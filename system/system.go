@@ -17,6 +17,7 @@ func Start() chan bool {
 	ex, _ := os.Executable()
 	exPath := filepath.Dir(ex)
 	monitors := helpers.ReadMonitors(exPath + "/config.yml")
+	devices := helpers.ReadDevices(exPath + "/config.yml")
 
 	//for each monitor print out the name and type
 	for _, v := range monitors.Monitors {
@@ -29,9 +30,16 @@ func Start() chan bool {
 		}
 
 	}
-
+	
 	gocron.Start()
-	camera.Stream()
+
+	for _, v := range devices.Devices {
+		if v.Type.Name == "camera" {
+			camera.Stream( v.Type.Http_addr, v.Type.Device_id, v.Type.Uri,  false)
+		}
+	}
+
+
 
 	return nil
 }
