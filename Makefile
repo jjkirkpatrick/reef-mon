@@ -9,13 +9,12 @@ pi:
 
 .PHONY: run-dev
 run-dev:
-	sudo go build -o "$(BINARY)reef-mon" -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
+	go build -o "$(DEVVINARY)reef-mon" -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
 	sudo cp config/config.yml bin/config.yml
-	./"$(BINARY)/reef-mon"
+	./"$(DEVVINARY)/reef-mon"
 
 .PHONY: deploy-service
 deploy-service:
-	sudo env GOOS=linux GOARCH=arm go build -o "$(DEPLOYBINARY)reef-mon" -ldflags "-s -w -X main.Version=$(VERSION)"  ./commands
 	sudo cp config/config.yml "$(DEPLOYBINARY)config.yml"
 	sudo cp config/reef-mon.service /etc/systemd/system/reef-mon.service
 	sudo systemctl daemon-reload

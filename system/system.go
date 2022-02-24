@@ -9,6 +9,7 @@ import (
 	"github.com/jjkikrpatrick/reef-mon/system/internal/helpers"
 	"github.com/jjkikrpatrick/reef-mon/system/modules/gpio"
 	"github.com/jjkikrpatrick/reef-mon/system/modules/temperature"
+	"github.com/jjkikrpatrick/reef-mon/system/modules/camera"
 )
 
 func Start() chan bool {
@@ -30,6 +31,7 @@ func Start() chan bool {
 	}
 
 	gocron.Start()
+	camera.Stream()
 
 	return nil
 }

@@ -1,7 +1,7 @@
 influxDB:
-  host: "http://192.168.1.123"
+  host: "http://192.168.1.124"
   port: "8086"
-  token: "S...Q=="
+  token: "O="
   bucket: "reef-mon"
   org: "reef-mon"
 
@@ -17,23 +17,3 @@ monitors:
       active_low: true
     influx:
       bucket: "reef-mon-water-level"
-  temp1:
-    name: "temperature 1"
-    measurement: "water_temperature"
-    field: "temperature"
-    interval: 5
-    type:
-      name: "1w_temperature"
-      deviceid: 28-01211358c5ab
-    influx:
-      bucket: "reef-mon-water-temperature"
-  temp2:
-    name: "temperature 2"
-    measurement: "water_temperature"
-    field: "temperature"
-    interval: 5
-    type:
-      name: "1w_temperature"
-      deviceid: "28-012113361d4d"
-    influx:
-      bucket: "reef-mon-water-temperature"

@@ -3,6 +3,7 @@ module github.com/jjkikrpatrick/reef-mon
 go 1.17
 
 require (
+	github.com/blackjack/webcam v0.0.0-20200313125108-10ed912a8539
 	github.com/influxdata/influxdb-client-go/v2 v2.6.0
 	github.com/jasonlvhit/gocron v0.0.1
 	github.com/stianeikeland/go-rpio/v4 v4.6.0
@@ -16,6 +17,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
+	golang.org/x/sys v0.0.0-20210423082822-04245dca01da // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
