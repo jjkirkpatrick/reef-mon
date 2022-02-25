@@ -46,4 +46,4 @@ devices:
       name: "camera"
       device_id:  "/dev/video0"     
       http_addr: ":8080"
-      uri: "/asdasd"
+      uri: "/feed"

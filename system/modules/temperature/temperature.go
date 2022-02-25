@@ -29,16 +29,16 @@ func Get(monitorConfig models.MonitorConfig) {
 
 			if err != nil {
 				fmt.Println(err)
+			}else{
+				datapoint := influxdb.DataPoint{
+					Measurement: monitorConfig.Measurement,
+					Tags:        map[string]string{"name": monitorConfig.Name},
+					Fields:      map[string]interface{}{monitorConfig.Field: temperature},
+					Timestamp:   time.Now(),
+					Bucket:      monitorConfig.Influx.Bucket,
+				}
+				influx.Write(datapoint)
 			}
-
-			datapoint := influxdb.DataPoint{
-				Measurement: monitorConfig.Measurement,
-				Tags:        map[string]string{"name": monitorConfig.Name},
-				Fields:      map[string]interface{}{monitorConfig.Field: temperature},
-				Timestamp:   time.Now(),
-				Bucket:      monitorConfig.Influx.Bucket,
-			}
-			influx.Write(datapoint)
 		}
 	}
 }
