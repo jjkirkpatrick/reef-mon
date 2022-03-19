@@ -29,7 +29,9 @@ func Get(monitorConfig models.MonitorConfig) {
 
 			if err != nil {
 				fmt.Println(err)
-			}else{
+			} else if temperature < 5.0 {
+				fmt.Printf("Temperature reading is %.2f°C, discarding as below threshold\n", temperature)
+			} else {
 				datapoint := influxdb.DataPoint{
 					Measurement: monitorConfig.Measurement,
 					Tags:        map[string]string{"name": monitorConfig.Name},
